@@ -19,8 +19,6 @@ jobs:
       matrix:
         targetPlatform:
           - StandaloneWindows
-          - StandaloneWindows64
-          - StandaloneLinux64
 
     steps:
       - uses: actions/checkout@v2
@@ -39,3 +37,15 @@ jobs:
         with:
           name: ${{ matrix.targetPlatform }}
           path: build
+
+      - name: Set Version
+        run: |
+          echo "version=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+      - name: Upload ${{ matrix.targetPlatform }} to itch.io project
+        uses: robpc/itchio-upload-action@v1
+        with:
+          path: build/${{ matrix.targetPlatform }}
+          project: ${{ env.itchio_project }}
+          channel: ${{ matrix.targetPlatform }}.${{ env.itchio_channel }}
+          version: ${{ matrix.targetPlatform }}.${{ env.version }}
+          api-key: ${{ secrets.ITCHIO_API_KEY }}
