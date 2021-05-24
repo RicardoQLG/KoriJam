@@ -1,4 +1,4 @@
-name: Deploy at Itch.io
+name: Build
 
 env:
   itchio_project: rqgodoy/escuridao-e-solidao
