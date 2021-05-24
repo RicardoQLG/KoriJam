@@ -2,7 +2,6 @@ name: Build
 
 env:
   itchio_project: rqgodoy/escuridao-e-solidao
-  itchio_channel: windows
 
 on:
   #  pull_request:
@@ -18,7 +17,11 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
+          - StandaloneOSX
           - StandaloneWindows
+          - StandaloneWindows64
+          - StandaloneLinux64
+          - WebGL
 
     steps:
       - uses: actions/checkout@v2
@@ -56,6 +59,6 @@ jobs:
         with:
           path: build/${{ matrix.targetPlatform }}
           project: ${{ env.itchio_project }}
-          channel: ${{ matrix.targetPlatform }}.${{ env.itchio_channel }}
+          channel: ${{ matrix.targetPlatform }}
           version: ${{ matrix.targetPlatform }}.${{ env.version }}
           api-key: ${{ secrets.ITCHIO_API_KEY }}
