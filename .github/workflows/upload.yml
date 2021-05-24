@@ -1,0 +1,38 @@
+name: Build and deploy
+
+env:
+  itchio_project: rqgodoy/escuridao-e-solidao
+  itchio_channel: windows
+
+on:
+  #  pull_request:
+  #    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows
+          - StandaloneWindows64
+          - StandaloneLinux64
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set Version
+        run: |
+          echo "version=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+      - name: Upload StandaloneWindows to itch.io project
+        uses: robpc/itchio-upload-action@v1
+        with:
+          path: build/StandaloneWindows
+          project: ${{ env.itchio_project }}
+          channel: StandaloneWindows.${{ env.itchio_channel }}
+          version: StandaloneWindows.${{ env.version }}
+          api-key: ${{ secrets.ITCHIO_API_KEY }}
