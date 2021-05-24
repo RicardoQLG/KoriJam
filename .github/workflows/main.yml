@@ -26,10 +26,9 @@ jobs:
       - name: Cache multiple paths
         uses: actions/cache@v2
         with:
-          path: |
-            ~/cache
-            !~/cache/exclude
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
 
       - name: Build project
         uses: game-ci/unity-builder@v2
